@@ -1,0 +1,55 @@
+# ================= CORE BACKEND =================
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# ================= DATABASE =================
+sqlalchemy==2.0.23
+pymysql==1.1.0
+alembic==1.13.0
+
+# ================= AUTH & SECURITY =================
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+bcrypt==4.1.1
+
+# ================= CACHING & BACKGROUND TASKS =================
+redis==5.0.1
+celery==5.3.4
+
+# ================= AI (LOCAL & FREE) =================
+ollama==0.1.7
+
+# # ================= VECTOR DB =================
+# chromadb==0.4.22
+# sentence-transformers==2.2.2
+
+# ================= ML & DATA =================
+numpy==1.26.4
+pandas==2.1.3
+scikit-learn==1.3.2
+
+# ================= EXTERNAL APIs =================
+twilio==8.10.0
+googlemaps==4.10.0
+requests==2.31.0
+
+# ================= WEBSOCKETS =================
+websockets==12.0
+python-socketio==5.10.0
+
+# ================= EMAIL =================
+aiosmtplib==3.0.1
+
+# ================= FILE HANDLING =================
+aiofiles==23.2.1
+
+# ================= UTILITIES =================
+python-dotenv==1.0.0
+pyyaml==6.0.1
+httpx==0.25.2
+
+# ================= VALIDATION =================
+email-validator==2.1.1
