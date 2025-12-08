@@ -53,3 +53,8 @@ httpx==0.25.2
 
 # ================= VALIDATION =================
 email-validator==2.1.1
+
+##########################
+openai>=1.0.0
+python-multipart>=0.0.6
+pydub>=0.25.1

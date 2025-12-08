@@ -1,0 +1,31 @@
+.shipments-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    color: #fff;
+}
+
+.shipment-card {
+    background: #232327;
+    padding: 18px;
+    border-radius: 14px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid #3c3d43;
+}
+
+.shipment-card:hover {
+    transform: translateY(-2px);
+    background: #2e2f34;
+}
+
+.shipment-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.shipment-status {
+    font-size: 14px;
+    opacity: 0.7;
+}

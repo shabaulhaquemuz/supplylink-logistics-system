@@ -1,0 +1,127 @@
+.dashboard-body {
+    background-color: #191919;
+    color: #fcfcfc;
+    font-family: "Outfit", sans-serif;
+}
+
+/* ---------------- NAVBAR ---------------- */
+.navbar {
+    height: 70px;
+    background: #2e2f34;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 2px 18px rgba(0,0,0,0.4);
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.nav-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #eb4304;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.nav-user {
+    font-size: 15px;
+    opacity: 0.85;
+}
+
+.btn-nav {
+    padding: 8px 14px;
+    background: #eb4304;
+    color: #fff;
+    border-radius: 10px;
+}
+
+.dashboard-container {
+    padding: 32px;
+}
+
+/* ---------------- METRIC CARDS ---------------- */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.metric-card {
+    background: #2e2f34;
+    padding: 22px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+}
+
+.metric-label {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 8px;
+}
+
+.metric-card h2 {
+    font-size: 32px;
+    font-weight: 600;
+}
+
+/* ---------------- CURRENT SHIPMENT ---------------- */
+.section-title {
+    font-size: 20px;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.current-shipment-box, .location-box {
+    background: #232327;
+    padding: 20px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 32px;
+}
+
+/* ---------------- ACTION BUTTONS ---------------- */
+.actions-section {
+    margin-top: 20px;
+    display: flex;
+    gap: 14px;
+}
+
+.action-btn {
+    text-decoration: none;
+    padding: 14px 20px;
+    border-radius: 14px;
+    font-size: 15px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #eb4304, #dc8360);
+    color: #fff;
+}
+
+.btn-secondary {
+    background: #236571;
+    color: #fff;
+}
+
+.action-btn {
+    position: relative;
+    z-index: 100;
+}

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Shipments — SupplyLink Driver</title>
+
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/shipments.css">
+
+
+    <!-- Page-specific styles -->
+    <style>
+        .page-container {
+            padding: 28px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .page-title {
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .shipments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .shipment-card {
+            background: linear-gradient(135deg, #2e2f34, #1a1a1a);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: var(--sl-shadow-soft);
+            transition: transform 0.15s ease;
+        }
+
+        .shipment-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .shipment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .shipment-id {
+            font-size: 15px;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: capitalize;
+            color: #fff;
+        }
+
+        .badge-pending { background-color: #f0ad4e; }
+        .badge-assigned { background-color: #0275d8; }
+        .badge-in_transit { background-color: #5bc0de; }
+        .badge-out_for_delivery { background-color: #5cb85c; }
+        .badge-delivered { background-color: #5cb85c; }
+        .badge-failed { background-color: #d9534f; }
+
+        .shipment-body {
+            margin-top: 14px;
+        }
+
+        .row {
+            margin-bottom: 6px;
+            opacity: 0.9;
+        }
+
+        .label {
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        .value {
+            font-size: 15px;
+            font-weight: 500;
+            margin-left: 6px;
+        }
+
+        .shipment-footer {
+            margin-top: 16px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-view {
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: var(--sl-accent);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.15s ease;
+        }
+
+        .btn-view:hover {
+            background: #ff5722;
+        }
+
+        .cod-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: #ffa726;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 10px;
+            color: #191919;
+        }
+
+        .empty-message {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 15px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+
+<body class="sl-body">
+
+    <div class="page-container">
+        <h1 class="page-title">Assigned Shipments</h1>
+
+        <div id="shipmentsList" class="shipments-list"></div>
+
+        <p id="emptyMsg" class="empty-message" style="display:none;">
+            No shipments assigned yet.
+        </p>
+    </div>
+
+    <script src="js/shipments.js"></script>
+</body>
+</html>

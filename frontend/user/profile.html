@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Supply Link</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar dashboard-nav">
+        <div class="container">
+            <div class="nav-brand">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <circle cx="12" cy="20" r="10" fill="none" stroke="#EB4304" stroke-width="2"/>
+                        <circle cx="28" cy="20" r="10" fill="none" stroke="#236571" stroke-width="2"/>
+                        <line x1="12" y1="15" x2="18" y2="21" stroke="#EB4304" stroke-width="2"/>
+                    </svg>
+                </div>
+                <span class="brand-text">Supply Link</span>
+            </div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="create_shipment.html">New Shipment</a>
+                <a href="profile.html" class="active">Profile</a>
+                <a href="#" id="logoutBtn" class="btn-secondary">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Content -->
+    <div class="form-container">
+        <div class="container">
+            <div class="form-card">
+                <div class="form-header">
+                    <h1>My Profile</h1>
+                    <p>View your account information</p>
+                </div>
+
+                <div id="loadingSpinner" class="loading-spinner">
+                    <svg width="48" height="48" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" opacity="0.25"/>
+                        <path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+                        </path>
+                    </svg>
+                </div>
+
+                <div id="profileContent" class="profile-content" style="display: none;">
+                    <div class="profile-avatar">
+                        <div class="avatar-circle">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <h2 id="profileName">Loading...</h2>
+                        <div class="profile-badge" id="profileRole">Customer</div>
+                    </div>
+
+                    <div class="profile-details">
+                        <div class="profile-section">
+                            <h3>Account Information</h3>
+                            
+                            <div class="profile-field">
+                                <div class="field-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-width="2"/>
+                                        <polyline points="22,6 12,13 2,6" stroke-width="2"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="field-label">Email Address</div>
+                                    <div class="field-value" id="profileEmail">Loading...</div>
+                                </div>
+                            </div>
+
+                            <div class="profile-field">
+                                <div class="field-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke-width="2"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="field-label">Phone Number</div>
+                                    <div class="field-value" id="profilePhone">Not provided</div>
+                                </div>
+                            </div>
+
+                            <div class="profile-field">
+                                <div class="field-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke-width="2"/>
+                                        <line x1="16" y1="2" x2="16" y2="6" stroke-width="2"/>
+                                        <line x1="8" y1="2" x2="8" y2="6" stroke-width="2"/>
+                                        <line x1="3" y1="10" x2="21" y2="10" stroke-width="2"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="field-label">Member Since</div>
+                                    <div class="field-value" id="profileCreated">Loading...</div>
+                                </div>
+                            </div>
+
+                            <div class="profile-field">
+                                <div class="field-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <circle cx="12" cy="12" r="3" stroke-width="2"/>
+                                        <path d="M12 1v6m0 6v6M1 12h6m6 0h6" stroke-width="2"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="field-label">Account Status</div>
+                                    <div class="field-value" id="profileStatus">
+                                        <span class="status-active">Active</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-actions">
+                        <a href="dashboard.html" class="btn-secondary btn-large">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/profile.js"></script>
+</body>
+</html>

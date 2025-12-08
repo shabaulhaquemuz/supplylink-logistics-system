@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Shipment - Supply Link</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/tracking.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar dashboard-nav">
+        <div class="container">
+            <div class="nav-brand">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <circle cx="12" cy="20" r="10" fill="none" stroke="#EB4304" stroke-width="2"/>
+                        <circle cx="28" cy="20" r="10" fill="none" stroke="#236571" stroke-width="2"/>
+                        <line x1="12" y1="15" x2="18" y2="21" stroke="#EB4304" stroke-width="2"/>
+                    </svg>
+                </div>
+                <span class="brand-text">Supply Link</span>
+            </div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="create_shipment.html">New Shipment</a>
+                <a href="profile.html">Profile</a>
+                <a href="#" id="logoutBtn" class="btn-secondary">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tracking Content -->
+    <div class="tracking-container">
+        <div class="container">
+            <div class="back-link">
+                <a href="dashboard.html">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M19 12H5M12 19l-7-7 7-7" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Back to Dashboard
+                </a>
+            </div>
+
+            <div id="loadingSpinner" class="loading-spinner">
+                <svg width="48" height="48" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" opacity="0.25"/>
+                    <path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+                    </path>
+                </svg>
+                <p>Loading shipment details...</p>
+            </div>
+
+            <div id="trackingContent" style="display: none;">
+                <!-- Shipment Overview -->
+                <div class="shipment-overview">
+                    <div class="overview-header">
+                        <div>
+                            <h1 id="shipmentNumber">Loading...</h1>
+                            <div class="status-badge" id="statusBadge">
+                                <span class="status-dot"></span>
+                                <span class="status-text">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overview-details">
+                        <div class="detail-group">
+                            <div class="detail-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <circle cx="12" cy="10" r="3" stroke-width="2"/>
+                                    <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="detail-label">Pickup Location</div>
+                                <div class="detail-value" id="pickupLocation">Loading...</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-arrow">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+
+                        <div class="detail-group">
+                            <div class="detail-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke-width="2"/>
+                                    <polyline points="9 22 9 12 15 12 15 22" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="detail-label">Delivery Location</div>
+                                <div class="detail-value" id="deliveryLocation">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shipment Info Grid -->
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-label">Cargo Type</div>
+                        <div class="info-value" id="cargoType">-</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">Weight</div>
+                        <div class="info-value" id="weight">-</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">Dimensions</div>
+                        <div class="info-value" id="dimensions">-</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">Total Price</div>
+                        <div class="info-value" id="totalPrice">-</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">COD Status</div>
+                        <div class="info-value" id="codStatus">-</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">Estimated Delivery</div>
+                        <div class="info-value" id="estimatedDelivery">-</div>
+                    </div>
+                </div>
+
+                <!-- Tracking Timeline -->
+                <div class="tracking-section">
+                    <h2>Tracking History</h2>
+                    
+                    <div id="trackingTimeline" class="tracking-timeline">
+                        <!-- Timeline items will be loaded here -->
+                    </div>
+
+                    <div id="noTracking" class="empty-tracking" style="display: none;">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" opacity="0.3">
+                            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                            <path d="M12 8v4M12 16h.01" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <p>No tracking updates available yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/tracking.js"></script>
+</body>
+</html>

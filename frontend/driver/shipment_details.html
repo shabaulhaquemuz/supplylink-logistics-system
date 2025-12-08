@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shipment Details — SupplyLink Driver</title>
+
+    <link rel="stylesheet" href="css/main.css" />
+
+    <!-- Page specific styling -->
+    <style>
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 24px;
+        }
+
+        .back-btn {
+            font-size: 14px;
+            margin-bottom: 22px;
+            color: var(--sl-text-muted);
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .details-card {
+            background: linear-gradient(135deg, #2e2f34, #191919);
+            padding: 26px;
+            border-radius: 22px;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: var(--sl-shadow-soft);
+        }
+
+        .title {
+            font-size: 22px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 17px;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            opacity: 0.85;
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 12px;
+        }
+
+        td {
+            padding: 6px 0;
+            font-size: 14px;
+        }
+
+        .label {
+            opacity: 0.6;
+            width: 35%;
+        }
+
+        .value {
+            font-weight: 500;
+        }
+
+        /* STATUS BADGE */
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            display: inline-block;
+            margin-bottom: 18px;
+            text-transform: capitalize;
+        }
+
+        .badge-pending { background: #f0ad4e; }
+        .badge-assigned { background: #0275d8; }
+        .badge-in_transit { background: #5bc0de; }
+        .badge-out_for_delivery { background: #5cb85c; }
+        .badge-delivered { background: #5cb85c; }
+        .badge-failed { background: #d9534f; }
+
+        /* Buttons */
+        .actions {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-action {
+            padding: 12px;
+            border-radius: 14px;
+            background: var(--sl-accent);
+            color: #fff;
+            border: none;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .btn-action:hover {
+            background: #ff5622;
+        }
+
+        .btn-fail {
+            background: #d9534f;
+        }
+
+        .btn-fail:hover {
+            background: #ff4f4f;
+        }
+
+        .cod-box {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,183,77,0.15);
+            border: 1px solid rgba(255,183,77,0.28);
+            border-radius: 12px;
+            color: #ffca28;
+            display: none;
+        }
+
+        .timeline {
+            margin-top: 20px;
+            padding: 16px;
+            border-left: 3px solid var(--sl-accent);
+        }
+
+        .timeline-item {
+            margin-bottom: 12px;
+        }
+
+        .timeline-item div {
+            opacity: 0.85;
+        }
+    </style>
+</head>
+
+<body class="sl-body">
+
+    <div class="container">
+
+        <div class="back-btn" onclick="history.back()">
+            ← Back to Shipments
+        </div>
+
+        <div id="detailsCard" class="details-card">
+            <div id="statusBadge"></div>
+
+            <h2 class="title">Shipment #<span id="shipId"></span></h2>
+
+            <h3 class="section-title">Customer Details</h3>
+            <table>
+                <tr><td class="label">Name:</td><td class="value" id="custName">—</td></tr>
+                <tr><td class="label">Phone:</td><td class="value" id="custPhone">—</td></tr>
+            </table>
+
+            <h3 class="section-title">Package Details</h3>
+            <table>
+                <tr><td class="label">Weight:</td><td class="value" id="pkgWeight">—</td></tr>
+                <tr><td class="label">Type:</td><td class="value" id="pkgType">—</td></tr>
+            </table>
+
+            <h3 class="section-title">Route Information</h3>
+            <table>
+                <tr><td class="label">Pickup Address:</td><td class="value" id="pickupAddr">—</td></tr>
+                <tr><td class="label">Delivery Address:</td><td class="value" id="deliveryAddr">—</td></tr>
+            </table>
+
+            <div id="codBox" class="cod-box"></div>
+
+            <h3 class="section-title">Tracking Timeline</h3>
+            <div id="timeline" class="timeline"></div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="actions">
+                <button class="btn-action" onclick="markPickedUp()">Mark Picked Up</button>
+                <button class="btn-action" onclick="markInTransit()">Mark In Transit</button>
+                <button class="btn-action" onclick="markOutForDelivery()">Mark Out For Delivery</button>
+                <button class="btn-action" onclick="markDelivered()">Mark Delivered</button>
+
+                <button class="btn-fail" onclick="markFailed()">Mark as Failed</button>
+
+                <button class="btn-action" onclick="collectCOD()">Collect COD</button>
+                <button class="btn-action" onclick="reportDelay()">Report Traffic Delay</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/details.js"></script>
+</body>
+</html>

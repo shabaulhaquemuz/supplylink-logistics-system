@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SupplyLink Driver • Login</title>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/login.css">
+  
+  <!-- Three.js CDN - MUST load first -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+<div class="login-container">
+
+  <!-- Left 3D Hero Section -->
+  <div class="login-hero">
+    <canvas id="canvas3d"></canvas>
+    <div class="hero-overlay"></div>
+    
+    <div class="hero-content">
+      <div class="hero-logo">
+        <div class="logo-circle">SL</div>
+        <div>
+          <h2>SUPPLYLINK</h2>
+          <p>Driver Console</p>
+        </div>
+      </div>
+
+      <h1 class="hero-title">
+        Stay in motion.<br>
+        Deliver with precision.
+      </h1>
+
+      <p class="hero-subtext">
+        Track your route, update statuses, and complete deliveries with a driver-first experience built for modern logistics.
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-value" id="deliveriesCount">0</div>
+          <div class="stat-label">Deliveries</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="routesCount">0</div>
+          <div class="stat-label">Active Routes</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="efficiencyCount">0%</div>
+          <div class="stat-label">Efficiency</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timeline Indicator -->
+    <div class="hero-timeline">
+      <div class="tl-node tl-active">PU</div>
+      <div class="tl-line"></div>
+      <div class="tl-node"></div>
+      <div class="tl-line"></div>
+      <div class="tl-node">DL</div>
+    </div>
+  </div>
+
+  <!-- Right Login Panel -->
+  <div class="login-panel">
+    <div class="login-card">
+      <h2>Driver Login</h2>
+      <p class="login-sub">Sign in with your registered driver account.</p>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="driver@supplylink.com" required>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="password" placeholder="••••••••" required>
+        </div>
+
+        <div class="login-options">
+          <label>
+            <input type="checkbox"> Keep me signed in
+          </label>
+          <a href="#" class="forgot">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="login-btn">Sign In</button>
+
+        <p class="error-msg" id="formError"></p>
+
+        <p class="register-link">
+          Don't have an account? <a href="register.html">Register</a>
+        </p>
+
+        <p class="contact-help">
+          Having trouble? Contact dispatch or system admin.
+        </p>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<!-- JavaScript files - Load at end -->
+<script src="js/3d-scene.js"></script>
+<script src="js/login.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Driver Dashboard – SupplyLink</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body class="dashboard-body">
+
+    <!-- TOP NAVBAR -->
+    <header class="navbar">
+        <div class="navbar-left">
+            <div class="nav-logo">SL</div>
+            <div class="nav-brand">
+                <h1>SupplyLink Driver</h1>
+            </div>
+        </div>
+
+        <div class="navbar-right">
+            <div id="driverName" class="nav-user"></div>
+            <button id="logoutBtn" class="btn btn-nav">Logout</button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-container">
+
+        <!-- METRICS CARDS -->
+        <section class="metrics-grid">
+
+            <div class="metric-card">
+                <p class="metric-label">Today’s Deliveries</p>
+                <h2 id="metricDeliveries">0</h2>
+            </div>
+
+            <div class="metric-card">
+                <p class="metric-label">Pending Shipments</p>
+                <h2 id="metricPending">0</h2>
+            </div>
+
+            <div class="metric-card">
+                <p class="metric-label">Completed</p>
+                <h2 id="metricCompleted">0</h2>
+            </div>
+
+            <div class="metric-card">
+                <p class="metric-label">Failed Deliveries</p>
+                <h2 id="metricFailed">0</h2>
+            </div>
+        </section>
+
+        <!-- CURRENT SHIPMENT -->
+        <section class="current-shipment-section">
+            <h3 class="section-title">Current Shipment</h3>
+
+            <div id="currentShipmentBox" class="current-shipment-box">
+                <p>No active shipments right now.</p>
+            </div>
+        </section>
+
+        <!-- LOCATION STATUS -->
+        <section class="location-section">
+            <h3 class="section-title">Last Known Location</h3>
+
+            <div id="locationBox" class="location-box">
+                <p>No recent location updates.</p>
+            </div>
+        </section>
+
+        <!-- ACTION BUTTONS -->
+        <section class="actions-section" style="position: relative; z-index: 20;">
+            <a href="shipments.html" class="btn btn-primary action-btn">View All Shipments</a>
+            <a href="profile.html" class="btn btn-secondary action-btn">Profile</a>
+        </section>
+
+
+    </main>
+
+    <script src="js/dashboard.js" defer></script>
+    
+</body>
+</html>

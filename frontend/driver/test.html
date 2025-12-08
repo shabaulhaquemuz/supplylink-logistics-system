@@ -1,0 +1,722 @@
+<!-- <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SupplyLink Driver • Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      background: #0a0e27;
+    }
+
+    .login-container {
+      display: flex;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .login-hero {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0f1729 0%, #1a2744 50%, #0a0e27 100%);
+    }
+
+    #canvas3d {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to right, rgba(10,14,39,0.7) 0%, transparent 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 60px;
+      color: white;
+      max-width: 600px;
+    }
+
+    .hero-logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 60px;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    .logo-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 20px;
+      box-shadow: 0 8px 32px rgba(255, 107, 53, 0.4);
+    }
+
+    .hero-logo h2 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    .hero-logo p {
+      font-size: 13px;
+      color: #94a3b8;
+      letter-spacing: 1px;
+    }
+
+    .hero-title {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeInLeft 1s ease-out 0.3s backwards;
+    }
+
+    .hero-subtext {
+      font-size: 18px;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 50px;
+      animation: fadeInLeft 1s ease-out 0.5s backwards;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      animation: fadeInUp 1s ease-out 0.7s backwards;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .hero-timeline {
+      position: absolute;
+      bottom: 60px;
+      left: 60px;
+      right: 60px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      animation: fadeInUp 1s ease-out 0.9s backwards;
+    }
+
+    .tl-node {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      color: #94a3b8;
+      position: relative;
+      z-index: 2;
+    }
+
+    .tl-node.tl-active {
+      background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+      border-color: #ff6b35;
+      color: white;
+      box-shadow: 0 8px 32px rgba(255, 107, 53, 0.5);
+      animation: pulse 2s infinite;
+    }
+
+    .tl-line {
+      flex: 1;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tl-line::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, #ff6b35, transparent);
+      animation: lineFlow 3s infinite;
+    }
+
+    .login-panel {
+      width: 500px;
+      background: #0f1729;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      position: relative;
+      box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      animation: fadeInRight 1s ease-out 0.4s backwards;
+    }
+
+    .login-card h2 {
+      font-size: 32px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 12px;
+    }
+
+    .login-sub {
+      color: #64748b;
+      margin-bottom: 40px;
+      font-size: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      color: #94a3b8;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: white;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #ff6b35;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+    }
+
+    input::placeholder {
+      color: #475569;
+    }
+
+    .login-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      font-size: 14px;
+    }
+
+    .login-options label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #94a3b8;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .login-options input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .forgot {
+      color: #ff6b35;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .forgot:hover {
+      color: #f7931e;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(255, 107, 53, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(255, 107, 53, 0.4);
+    }
+
+    .login-btn:active {
+      transform: translateY(0);
+    }
+
+    .error-msg {
+      color: #ef4444;
+      font-size: 14px;
+      margin-top: 16px;
+      text-align: center;
+      display: none;
+    }
+
+    .contact-help {
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+      margin-top: 24px;
+    }
+
+    .register-link {
+      text-align: center;
+      margin-top: 24px;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    .register-link a {
+      color: #ff6b35;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .register-link a:hover {
+      color: #f7931e;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 107, 53, 0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float 15s infinite ease-in-out;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 8px 32px rgba(255, 107, 53, 0.5); }
+      50% { box-shadow: 0 8px 48px rgba(255, 107, 53, 0.8); }
+    }
+
+    @keyframes lineFlow {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); opacity: 0; }
+      10%, 90% { opacity: 1; }
+      50% { transform: translate(100px, -100px); }
+    }
+
+    @media (max-width: 1024px) {
+      .login-hero { display: none; }
+      .login-panel { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-container">
+  <div class="login-hero">
+    <canvas id="canvas3d"></canvas>
+    <div class="hero-overlay"></div>
+    
+    <div class="hero-content">
+      <div class="hero-logo">
+        <div class="logo-circle">SL</div>
+        <div>
+          <h2>SUPPLYLINK</h2>
+          <p>Driver Console</p>
+        </div>
+      </div>
+
+      <h1 class="hero-title">
+        Stay in motion.<br>
+        Deliver with precision.
+      </h1>
+
+      <p class="hero-subtext">
+        Track your route, update statuses, and complete deliveries with a driver-first experience built for modern logistics.
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-value" id="deliveriesCount">0</div>
+          <div class="stat-label">Deliveries</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="routesCount">0</div>
+          <div class="stat-label">Active Routes</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="efficiencyCount">0%</div>
+          <div class="stat-label">Efficiency</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-timeline">
+      <div class="tl-node tl-active">PU</div>
+      <div class="tl-line"></div>
+      <div class="tl-node"></div>
+      <div class="tl-line"></div>
+      <div class="tl-node">DL</div>
+    </div>
+  </div>
+
+  <div class="login-panel">
+    <div class="login-card">
+      <h2>Driver Login</h2>
+      <p class="login-sub">Sign in with your registered driver account.</p>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="driver@supplylink.com" required>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="password" placeholder="••••••••" required>
+        </div>
+
+        <div class="login-options">
+          <label>
+            <input type="checkbox"> Keep me signed in
+          </label>
+          <a href="#" class="forgot">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="login-btn">Sign In</button>
+
+        <p class="error-msg" id="formError"></p>
+
+        <p class="register-link">
+          Don't have an account? <a href="register.html">Register</a>
+        </p>
+
+        <p class="contact-help">
+          Having trouble? Contact dispatch or system admin.
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// API Configuration
+const API_BASE_URL = "http://127.0.0.1:8002/api/driver";
+
+// Check if already logged in
+(function redirectIfAuthenticated() {
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    window.location.href = "dashboard.html";
+  }
+})();
+
+// Wait for DOM
+window.addEventListener('load', () => {
+  const canvas = document.getElementById('canvas3d');
+  
+  // Three.js Scene
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+
+  renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+
+  // Create van
+  const vanGroup = new THREE.Group();
+
+  const bodyGeo = new THREE.BoxGeometry(2, 1, 3);
+  const bodyMat = new THREE.MeshPhongMaterial({ color: 0xff6b35, shininess: 100 });
+  const body = new THREE.Mesh(bodyGeo, bodyMat);
+  body.position.y = 0.5;
+  vanGroup.add(body);
+
+  const cabinGeo = new THREE.BoxGeometry(1.8, 0.8, 1.5);
+  const cabinMat = new THREE.MeshPhongMaterial({ color: 0xff8855, shininess: 100 });
+  const cabin = new THREE.Mesh(cabinGeo, cabinMat);
+  cabin.position.set(0, 1.2, 0.8);
+  vanGroup.add(cabin);
+
+  const wheelGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.3, 16);
+  const wheelMat = new THREE.MeshPhongMaterial({ color: 0x1a1a1a });
+
+  const wheels = [];
+  const wheelPositions = [
+    [-1.2, 0.3, 1],
+    [1.2, 0.3, 1],
+    [-1.2, 0.3, -1],
+    [1.2, 0.3, -1]
+  ];
+
+  wheelPositions.forEach(pos => {
+    const wheel = new THREE.Mesh(wheelGeo, wheelMat);
+    wheel.rotation.z = Math.PI / 2;
+    wheel.position.set(...pos);
+    vanGroup.add(wheel);
+    wheels.push(wheel);
+  });
+
+  scene.add(vanGroup);
+
+  // Road
+  const roadGeo = new THREE.PlaneGeometry(20, 50);
+  const roadMat = new THREE.MeshPhongMaterial({ color: 0x1a2744, side: THREE.DoubleSide });
+  const road = new THREE.Mesh(roadGeo, roadMat);
+  road.rotation.x = -Math.PI / 2;
+  road.position.y = -0.5;
+  scene.add(road);
+
+  // Road lines
+  const roadLines = [];
+  for (let i = -20; i < 20; i += 4) {
+    const lineGeo = new THREE.BoxGeometry(0.2, 0.05, 2);
+    const lineMat = new THREE.MeshPhongMaterial({ color: 0xffffff });
+    const line = new THREE.Mesh(lineGeo, lineMat);
+    line.position.set(0, -0.45, i);
+    scene.add(line);
+    roadLines.push(line);
+  }
+
+  // Buildings
+  for (let i = 0; i < 15; i++) {
+    const x = (Math.random() - 0.5) * 30;
+    const z = (Math.random() - 0.5) * 40;
+    const height = Math.random() * 8 + 3;
+    if (Math.abs(x) > 4) {
+      const buildGeo = new THREE.BoxGeometry(2, height, 2);
+      const buildMat = new THREE.MeshPhongMaterial({ 
+        color: Math.random() > 0.5 ? 0x2d3748 : 0x1e293b,
+        transparent: true,
+        opacity: 0.8
+      });
+      const building = new THREE.Mesh(buildGeo, buildMat);
+      building.position.set(x, height / 2, z);
+      scene.add(building);
+    }
+  }
+
+  // Lighting
+  const ambientLight = new THREE.AmbientLight(0x404040, 2);
+  scene.add(ambientLight);
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+  dirLight.position.set(5, 10, 5);
+  scene.add(dirLight);
+
+  const pointLight = new THREE.PointLight(0xff6b35, 2, 50);
+  pointLight.position.set(0, 5, 5);
+  scene.add(pointLight);
+
+  camera.position.set(5, 3, 8);
+  camera.lookAt(0, 0, 0);
+
+  let vanRotation = 0;
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    roadLines.forEach(line => {
+      line.position.z += 0.1;
+      if (line.position.z > 20) line.position.z = -20;
+    });
+
+    wheels.forEach(wheel => wheel.rotation.x += 0.1);
+
+    vanGroup.position.y = Math.sin(Date.now() * 0.002) * 0.1;
+    vanGroup.rotation.z = Math.sin(Date.now() * 0.001) * 0.02;
+
+    vanRotation += 0.001;
+    camera.position.x = Math.sin(vanRotation) * 8;
+    camera.position.z = Math.cos(vanRotation) * 8;
+    camera.lookAt(0, 0, 0);
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  window.addEventListener('resize', () => {
+    const width = canvas.offsetWidth;
+    const height = canvas.offsetHeight;
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+  });
+
+  // Counters
+  function animateCounter(id, target, suffix = '') {
+    let current = 0;
+    const element = document.getElementById(id);
+    if (!element) return;
+    const increment = target / 50;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        current = target;
+        clearInterval(timer);
+      }
+      element.textContent = Math.floor(current) + suffix;
+    }, 30);
+  }
+
+  setTimeout(() => {
+    animateCounter('deliveriesCount', 1247);
+    animateCounter('routesCount', 89);
+    animateCounter('efficiencyCount', 98, '%');
+  }, 1000);
+
+  // Particles
+  const hero = document.querySelector('.login-hero');
+  for (let i = 0; i < 20; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.top = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 5 + 's';
+    hero.appendChild(particle);
+  }
+});
+
+// Login Form
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("loginForm");
+  const errorBox = document.getElementById("formError");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorBox.style.display = 'none';
+    errorBox.textContent = "";
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    if (!email || !password) {
+      showError("Please enter both email and password.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!res.ok) {
+        let msg = "Login failed. Please check your credentials.";
+        try {
+          const data = await res.json();
+          if (data?.detail) msg = data.detail;
+        } catch (_) {}
+        showError(msg);
+        return;
+      }
+
+      const data = await res.json();
+      localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("driver_info", JSON.stringify(data.driver));
+      window.location.href = "dashboard.html";
+    } catch (err) {
+      console.error(err);
+      showError("Unable to connect to server. Please try again.");
+    }
+  });
+
+  function showError(message) {
+    errorBox.textContent = message;
+    errorBox.style.display = 'block';
+  }
+});
+</script>
+
+</body>
+</html> -->
+

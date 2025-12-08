@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register Driver — SupplyLink</title>
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+
+<body class="sl-body--auth">
+
+  <div class="auth-layout">
+
+    <!-- LEFT HERO -->
+    <div class="auth-hero">
+      <div class="auth-hero-inner">
+        <div class="logo-row">
+          <div class="logo-mark">SL</div>
+          <div class="logo-text">
+            <div class="logo-title">SUPPLYLINK</div>
+            <div class="logo-subtitle">Driver Console</div>
+          </div>
+        </div>
+
+        <h1 class="hero-title">Become a<br>SupplyLink Driver</h1>
+        <p class="hero-text">
+          Register your account to access your shipments, routes, updates, and delivery actions.
+        </p>
+
+        <!-- Animated Route -->
+        <div class="route-anim">
+          <div class="route-line"></div>
+          <div class="route-node route-node--start">PU</div>
+          <div class="route-node route-node--mid"></div>
+          <div class="route-node route-node--end">DL</div>
+          <div class="route-dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT FORM -->
+    <div class="auth-form-wrap">
+      <div class="auth-form-card">
+
+        <h2 class="auth-title">Driver Registration</h2>
+        <p class="auth-subtitle">Create your driver account to begin.</p>
+
+        <div id="errorBox" class="form-error" style="display:none;"></div>
+
+        <form id="registerForm" class="auth-form">
+
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" class="input" id="full_name" placeholder="John Carter" required />
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="input" id="email" placeholder="driver@supplylink.com" required />
+          </div>
+
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="text" class="input" id="phone" placeholder="+919876543210" required />
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="input" id="password" placeholder="••••••••" required />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full">
+            Register
+          </button>
+
+          <div class="auth-footer-text">
+            Already have an account? 
+            <a href="index.html" class="link-muted">Sign In</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/register.js"></script>
+</body>
+</html>

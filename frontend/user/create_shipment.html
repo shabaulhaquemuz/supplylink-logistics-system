@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Shipment - Supply Link</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar dashboard-nav">
+        <div class="container">
+            <div class="nav-brand">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <circle cx="12" cy="20" r="10" fill="none" stroke="#EB4304" stroke-width="2"/>
+                        <circle cx="28" cy="20" r="10" fill="none" stroke="#236571" stroke-width="2"/>
+                        <line x1="12" y1="15" x2="18" y2="21" stroke="#EB4304" stroke-width="2"/>
+                    </svg>
+                </div>
+                <span class="brand-text">Supply Link</span>
+            </div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="create_shipment.html" class="active">New Shipment</a>
+                <a href="profile.html">Profile</a>
+                <a href="#" id="logoutBtn" class="btn-secondary">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Form Content -->
+    <div class="form-container">
+        <div class="container">
+            <div class="form-card">
+                <div class="form-header">
+                    <h1>Create New Shipment</h1>
+                    <p>Fill in the details below to book your shipment</p>
+                </div>
+
+                <form id="shipmentForm" class="shipment-form">
+                    <!-- Location Details -->
+                    <div class="form-section">
+                        <h3 class="section-title">Location Details</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="pickup_location">Pickup Location *</label>
+                                <input type="text" id="pickup_location" name="pickup_location" required 
+                                       placeholder="Enter pickup address">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="delivery_location">Delivery Location *</label>
+                                <input type="text" id="delivery_location" name="delivery_location" required 
+                                       placeholder="Enter delivery address">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+<div class="form-group checkbox-group">
+<label class="checkbox-label">
+<input type="checkbox" id="is_home_pickup" name="is_home_pickup">
+<span>Home Pickup Service</span>
+</label>
+</div><div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="is_home_delivery" name="is_home_delivery" checked>
+                                <span>Home Delivery Service</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cargo Details -->
+                <div class="form-section">
+                    <h3 class="section-title">Cargo Details</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cargo_type">Cargo Type</label>
+                            <select id="cargo_type" name="cargo_type">
+                                <option value="">Select cargo type</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Documents">Documents</option>
+                                <option value="Clothing">Clothing</option>
+                                <option value="Food">Food Items</option>
+                                <option value="Furniture">Furniture</option>
+                                <option value="Medical">Medical Supplies</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="weight">Weight (kg)</label>
+                            <input type="number" id="weight" name="weight" step="0.1" min="0" 
+                                   placeholder="Enter weight in kg">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dimensions">Dimensions (L x W x H in cm)</label>
+                        <input type="text" id="dimensions" name="dimensions" 
+                               placeholder="e.g., 30 x 20 x 15">
+                    </div>
+                </div>
+
+                <!-- Delivery Options -->
+                <div class="form-section">
+                    <h3 class="section-title">Delivery Options</h3>
+                    
+                    <div class="form-group">
+                        <label for="estimated_delivery">Estimated Delivery Date</label>
+                        <input type="datetime-local" id="estimated_delivery" name="estimated_delivery">
+                    </div>
+                </div>
+
+                <!-- COD Options -->
+                <div class="form-section">
+                    <h3 class="section-title">Payment Options</h3>
+                    
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="is_cod" name="is_cod">
+                            <span>Cash on Delivery (COD)</span>
+                        </label>
+                    </div>
+
+                    <div class="form-group" id="codAmountGroup" style="display: none;">
+                        <label for="cod_amount">COD Amount ($)</label>
+                        <input type="number" id="cod_amount" name="cod_amount" step="0.01" min="0" 
+                               placeholder="Enter COD amount">
+                    </div>
+                </div>
+
+                <!-- Price Estimate -->
+                <div class="price-estimate" id="priceEstimate" style="display: none;">
+                    <h3>Price Estimate</h3>
+                    <div class="price-breakdown">
+                        <div class="price-row">
+                            <span>Base Price:</span>
+                            <span id="basePrice">$0.00</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Fuel Surcharge (15%):</span>
+                            <span id="fuelSurcharge">$0.00</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total Price:</span>
+                            <span id="totalPrice">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+                <div class="form-actions">
+                    <a href="dashboard.html" class="btn-secondary btn-large">Cancel</a>
+                    <button type="submit" class="btn-primary btn-large">
+                        <span class="btn-text">Create Shipment</span>
+                        <span class="btn-loader" style="display: none;">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" opacity="0.25"/>
+                                <path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+                                </path>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="js/shipments.js"></script></body>
+</html>

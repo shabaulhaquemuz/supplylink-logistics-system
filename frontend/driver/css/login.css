@@ -1,0 +1,448 @@
+/* css/login.css - Complete Premium 3D Login Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  background: #0a0e27;
+}
+
+.login-container {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ======================================== 3D CANVAS HERO SECTION ======================================== */
+.login-hero {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f1729 0%, #1a2744 50%, #0a0e27 100%);
+}
+
+#canvas3d {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, rgba(10,14,39,0.7) 0%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 60px;
+  color: white;
+  max-width: 600px;
+}
+
+/* ======================================== HERO LOGO ======================================== */
+.hero-logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 60px;
+  animation: fadeInDown 1s ease-out;
+}
+
+.logo-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+  box-shadow: 0 8px 32px rgba(255, 107, 53, 0.4);
+}
+
+.hero-logo h2 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.hero-logo p {
+  font-size: 13px;
+  color: #94a3b8;
+  letter-spacing: 1px;
+}
+
+/* ======================================== HERO TEXT ======================================== */
+.hero-title {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeInLeft 1s ease-out 0.3s backwards;
+}
+
+.hero-subtext {
+  font-size: 18px;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin-bottom: 50px;
+  animation: fadeInLeft 1s ease-out 0.5s backwards;
+}
+
+/* ======================================== HERO STATISTICS ======================================== */
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  animation: fadeInUp 1s ease-out 0.7s backwards;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 36px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ======================================== HERO TIMELINE ======================================== */
+.hero-timeline {
+  position: absolute;
+  bottom: 60px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  animation: fadeInUp 1s ease-out 0.9s backwards;
+}
+
+.tl-node {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #94a3b8;
+  position: relative;
+  z-index: 2;
+}
+
+.tl-node.tl-active {
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  border-color: #ff6b35;
+  color: white;
+  box-shadow: 0 8px 32px rgba(255, 107, 53, 0.5);
+  animation: pulse 2s infinite;
+}
+
+.tl-line {
+  flex: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.tl-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #ff6b35, transparent);
+  animation: lineFlow 3s infinite;
+}
+
+/* ======================================== LOGIN PANEL ======================================== */
+.login-panel {
+  width: 500px;
+  background: #0f1729;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  animation: fadeInRight 1s ease-out 0.4s backwards;
+}
+
+.login-card h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.login-sub {
+  color: #64748b;
+  margin-bottom: 40px;
+  font-size: 15px;
+}
+
+/* ======================================== FORM ELEMENTS ======================================== */
+.form-group {
+  margin-bottom: 24px;
+}
+
+label {
+  display: block;
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+input {
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: white;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #ff6b35;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+}
+
+input::placeholder {
+  color: #475569;
+}
+
+/* ======================================== LOGIN OPTIONS ======================================== */
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  font-size: 14px;
+}
+
+.login-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  margin: 0;
+  cursor: pointer;
+}
+
+.login-options input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  cursor: pointer;
+}
+
+.forgot {
+  color: #ff6b35;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.forgot:hover {
+  color: #f7931e;
+}
+
+/* ======================================== BUTTONS ======================================== */
+.login-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(255, 107, 53, 0.4);
+}
+
+.login-btn:active {
+  transform: translateY(0);
+}
+
+/* ======================================== ERROR & LINKS ======================================== */
+.error-msg {
+  color: #ef4444;
+  font-size: 14px;
+  margin-top: 16px;
+  text-align: center;
+  display: none;
+}
+
+.contact-help {
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+  margin-top: 24px;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 24px;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.register-link a {
+  color: #ff6b35;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-link a:hover {
+  color: #f7931e;
+}
+
+/* ======================================== FLOATING PARTICLES ======================================== */
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 107, 53, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: float 15s infinite ease-in-out;
+}
+
+/* ======================================== ANIMATIONS ======================================== */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 8px 32px rgba(255, 107, 53, 0.5);
+  }
+  50% {
+    box-shadow: 0 8px 48px rgba(255, 107, 53, 0.8);
+  }
+}
+
+@keyframes lineFlow {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10%, 90% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate(100px, -100px);
+  }
+}
+
+/* ======================================== RESPONSIVE DESIGN ======================================== */
+@media (max-width: 1024px) {
+  .login-hero {
+    display: none;
+  }
+  
+  .login-panel {
+    width: 100%;
+  }
+}

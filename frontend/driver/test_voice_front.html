@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voice Assistant Test</title>
+</head>
+<body>
+    <h1>Driver Voice Assistant</h1>
+    <button id="recordBtn">Hold to Record</button>
+    <p id="status"></p>
+    <p id="result"></p>
+    
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+        
+        const recordBtn = document.getElementById('recordBtn');
+        const status = document.getElementById('status');
+        const result = document.getElementById('result');
+        
+        recordBtn.addEventListener('mousedown', async () => {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            
+            mediaRecorder.ondataavailable = (event) => {
+                audioChunks.push(event.data);
+            };
+            
+            mediaRecorder.start();
+            status.textContent = "Recording...";
+        });
+        
+        recordBtn.addEventListener('mouseup', () => {
+            mediaRecorder.stop();
+            status.textContent = "Processing...";
+            
+            mediaRecorder.onstop = async () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                audioChunks = [];
+                
+                const formData = new FormData();
+                formData.append('audio_file', audioBlob, 'recording.wav');
+                
+                const response = await fetch('http://localhost:8000/api/driver/voice/command?driver_id=DRV123', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                result.innerHTML = `
+                    <strong>Transcription:</strong> ${data.transcription}<br>
+                    <strong>Intent:</strong> ${data.intent}<br>
+                    <strong>Message:</strong> ${data.message}
+                `;
+                status.textContent = "Ready";
+            };
+        });
+    </script>
+</body>
+</html>

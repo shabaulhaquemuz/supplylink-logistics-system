@@ -1,0 +1,77 @@
+/* Wrapper around the whole content */
+.profile-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 20px;
+}
+
+/* Profile card styling */
+.profile-card {
+    background: #1d1f24;
+    padding: 40px;
+    width: 100%;
+    max-width: 650px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+.profile-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.profile-sub {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 25px;
+}
+
+/* Rows (label + value) */
+.profile-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Fix button alignment */
+.back-btn {
+    margin-top: 30px;
+    width: 100%;
+    padding: 12px;
+}
+
+/* --- CRITICAL FIX BELOW --- */
+
+/* Fix navbar alignment */
+.navbar {
+    display: flex;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 20px 40px !important;
+}
+
+/* Fix left and right parts of navbar */
+.navbar-left,
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Make SL logo & brand aligned */
+.nav-logo {
+    background: #ff6b35;
+    color: white;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-weight: 600;
+    font-size: 18px;
+}

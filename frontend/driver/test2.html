@@ -1,0 +1,968 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logistics Animation Test</title>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    #canvas3d { width: 100vw; height: 100vh; display: block; }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+  <canvas id="canvas3d"></canvas>
+  <script>
+// js/3d-scene.js - ULTIMATE REALISTIC MULTI-STAGE LOGISTICS ANIMATION
+
+window.addEventListener('load', () => {
+  const canvas = document.getElementById('canvas3d');
+  if (!canvas) return;
+
+  if (typeof THREE === 'undefined') {
+    console.error('THREE.js not loaded!');
+    return;
+  }
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x87ceeb, 50, 200);
+  
+  const camera = new THREE.PerspectiveCamera(75, canvas.offsetWidth / canvas.offsetHeight, 0.1, 500);
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+
+  renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  
+  // Animation system
+  let animationTime = 0;
+  const PHASE_DURATION = 240;
+  
+  // ============================================
+  // PREMIUM COLOR PALETTE
+  // ============================================
+  const COLORS = {
+    primary: 0xEB4304,
+    secondary: 0x236571,
+    accent: 0xDC8360,
+    dark: 0x191919,
+    light: 0xE4E4E4,
+    white: 0xFFFFFF,
+    asphalt: 0x2c3e50,
+    concrete: 0x95a5a6,
+    grass: 0x27ae60,
+    sky: 0x87ceeb,
+    metal: 0x7f8c8d,
+    skin: 0xfdbcb4,
+    warehouse: 0x34495e,
+    warehouseTrim: 0x2c3e50
+  };
+
+  // ============================================
+  // HELPER: CREATE HUMAN CHARACTER
+  // ============================================
+  function createHuman(color = COLORS.primary) {
+    const human = new THREE.Group();
+    
+    // Body
+    const body = new THREE.Mesh(
+      new THREE.BoxGeometry(0.4, 0.7, 0.25),
+      new THREE.MeshPhongMaterial({ color: color })
+    );
+    body.position.y = 0.85;
+    body.castShadow = true;
+    human.add(body);
+    
+    // Head
+    const head = new THREE.Mesh(
+      new THREE.SphereGeometry(0.18, 16, 16),
+      new THREE.MeshPhongMaterial({ color: COLORS.skin })
+    );
+    head.position.y = 1.4;
+    head.castShadow = true;
+    human.add(head);
+    
+    // Arms
+    const armGeo = new THREE.BoxGeometry(0.12, 0.5, 0.12);
+    const armMat = new THREE.MeshPhongMaterial({ color: color });
+    
+    const leftArm = new THREE.Mesh(armGeo, armMat);
+    leftArm.position.set(-0.3, 0.9, 0);
+    leftArm.castShadow = true;
+    human.add(leftArm);
+    
+    const rightArm = new THREE.Mesh(armGeo, armMat);
+    rightArm.position.set(0.3, 0.9, 0);
+    rightArm.castShadow = true;
+    human.add(rightArm);
+    
+    // Legs
+    const legGeo = new THREE.BoxGeometry(0.15, 0.5, 0.15);
+    const legMat = new THREE.MeshPhongMaterial({ color: 0x34495e });
+    
+    const leftLeg = new THREE.Mesh(legGeo, legMat);
+    leftLeg.position.set(-0.12, 0.25, 0);
+    leftLeg.castShadow = true;
+    human.add(leftLeg);
+    
+    const rightLeg = new THREE.Mesh(legGeo, legMat);
+    rightLeg.position.set(0.12, 0.25, 0);
+    rightLeg.castShadow = true;
+    human.add(rightLeg);
+    
+    human.userData = { leftArm, rightArm, leftLeg, rightLeg };
+    
+    return human;
+  }
+
+  // ============================================
+  // HELPER: CREATE PACKAGE
+  // ============================================
+  function createPackage(size = 0.4) {
+    const pkg = new THREE.Mesh(
+      new THREE.BoxGeometry(size, size, size),
+      new THREE.MeshPhongMaterial({ 
+        color: 0x8B4513,
+        shininess: 10
+      })
+    );
+    pkg.castShadow = true;
+    
+    // Tape
+    const tape = new THREE.Mesh(
+      new THREE.BoxGeometry(size + 0.01, 0.05, size + 0.01),
+      new THREE.MeshPhongMaterial({ color: 0xF4D03F })
+    );
+    tape.position.y = size / 2;
+    pkg.add(tape);
+    
+    return pkg;
+  }
+
+  // ============================================
+  // CREATE MODERN WAREHOUSE 1
+  // ============================================
+  const warehouse1 = new THREE.Group();
+  
+  // Main building
+  const wh1Main = new THREE.Mesh(
+    new THREE.BoxGeometry(15, 8, 12),
+    new THREE.MeshPhongMaterial({ 
+      color: COLORS.warehouse,
+      shininess: 40,
+      specular: 0x444444
+    })
+  );
+  wh1Main.position.set(-40, 4, -6);
+  wh1Main.castShadow = true;
+  wh1Main.receiveShadow = true;
+  warehouse1.add(wh1Main);
+  
+  // Roof with gradient
+  const wh1Roof = new THREE.Mesh(
+    new THREE.BoxGeometry(15.5, 0.5, 12.5),
+    new THREE.MeshPhongMaterial({ color: COLORS.warehouseTrim })
+  );
+  wh1Roof.position.set(-40, 8.25, -6);
+  warehouse1.add(wh1Roof);
+  
+  // Loading dock
+  const dock1 = new THREE.Mesh(
+    new THREE.BoxGeometry(5, 1.2, 4),
+    new THREE.MeshPhongMaterial({ color: COLORS.concrete })
+  );
+  dock1.position.set(-40, 0.6, 0.5);
+  dock1.castShadow = true;
+  warehouse1.add(dock1);
+  
+  // Roll-up door
+  const door1 = new THREE.Mesh(
+    new THREE.BoxGeometry(4, 4, 0.2),
+    new THREE.MeshPhongMaterial({ color: COLORS.metal, shininess: 60 })
+  );
+  door1.position.set(-40, 2, 0.3);
+  warehouse1.add(door1);
+  
+  // Windows
+  for (let i = 0; i < 3; i++) {
+    const window1 = new THREE.Mesh(
+      new THREE.BoxGeometry(1.5, 2, 0.15),
+      new THREE.MeshPhongMaterial({ 
+        color: 0x3498db,
+        transparent: true,
+        opacity: 0.7,
+        shininess: 100
+      })
+    );
+    window1.position.set(-40 + (i - 1) * 3, 5, 0.2);
+    warehouse1.add(window1);
+  }
+  
+  // Company sign
+  const sign1 = new THREE.Mesh(
+    new THREE.BoxGeometry(6, 1.2, 0.15),
+    new THREE.MeshPhongMaterial({ 
+      color: COLORS.primary,
+      emissive: COLORS.primary,
+      emissiveIntensity: 0.5
+    })
+  );
+  sign1.position.set(-40, 7, 0.3);
+  warehouse1.add(sign1);
+  
+  scene.add(warehouse1);
+
+  // Warehouse worker 1
+  const worker1 = createHuman(COLORS.secondary);
+  worker1.position.set(-38, 0, 1.5);
+  scene.add(worker1);
+
+  // ============================================
+  // CREATE MODERN WAREHOUSE 2
+  // ============================================
+  const warehouse2 = new THREE.Group();
+  
+  const wh2Main = new THREE.Mesh(
+    new THREE.BoxGeometry(13, 7, 10),
+    new THREE.MeshPhongMaterial({ 
+      color: COLORS.warehouse,
+      shininess: 40,
+      specular: 0x444444
+    })
+  );
+  wh2Main.position.set(45, 3.5, -5);
+  wh2Main.castShadow = true;
+  wh2Main.receiveShadow = true;
+  warehouse2.add(wh2Main);
+  
+  const wh2Roof = new THREE.Mesh(
+    new THREE.BoxGeometry(13.5, 0.5, 10.5),
+    new THREE.MeshPhongMaterial({ color: COLORS.warehouseTrim })
+  );
+  wh2Roof.position.set(45, 7.25, -5);
+  warehouse2.add(wh2Roof);
+  
+  const dock2 = new THREE.Mesh(
+    new THREE.BoxGeometry(4, 1.2, 3.5),
+    new THREE.MeshPhongMaterial({ color: COLORS.concrete })
+  );
+  dock2.position.set(45, 0.6, 0.3);
+  dock2.castShadow = true;
+  warehouse2.add(dock2);
+  
+  const door2 = new THREE.Mesh(
+    new THREE.BoxGeometry(3.5, 3.5, 0.2),
+    new THREE.MeshPhongMaterial({ color: COLORS.metal, shininess: 60 })
+  );
+  door2.position.set(45, 1.75, 0.2);
+  warehouse2.add(door2);
+  
+  // Windows
+  for (let i = 0; i < 2; i++) {
+    const window2 = new THREE.Mesh(
+      new THREE.BoxGeometry(1.5, 2, 0.15),
+      new THREE.MeshPhongMaterial({ 
+        color: 0x3498db,
+        transparent: true,
+        opacity: 0.7,
+        shininess: 100
+      })
+    );
+    window2.position.set(45 + (i - 0.5) * 3, 4.5, 0.2);
+    warehouse2.add(window2);
+  }
+  
+  const sign2 = new THREE.Mesh(
+    new THREE.BoxGeometry(5, 1, 0.15),
+    new THREE.MeshPhongMaterial({ 
+      color: COLORS.primary,
+      emissive: COLORS.primary,
+      emissiveIntensity: 0.5
+    })
+  );
+  sign2.position.set(45, 6.5, 0.3);
+  warehouse2.add(sign2);
+  
+  scene.add(warehouse2);
+
+  // Warehouse worker 2
+  const worker2 = createHuman(COLORS.secondary);
+  worker2.position.set(47, 0, 1.5);
+  scene.add(worker2);
+
+  // ============================================
+  // CREATE RESIDENTIAL HOUSE (SMALLER SCALE)
+  // ============================================
+  const house = new THREE.Group();
+  
+  const houseBase = new THREE.Mesh(
+    new THREE.BoxGeometry(3.5, 2.8, 3.5),
+    new THREE.MeshPhongMaterial({ color: 0xe8d4b0, shininess: 20 })
+  );
+  houseBase.position.set(45, 1.4, 35);
+  houseBase.castShadow = true;
+  house.add(houseBase);
+  
+  // Pitched roof
+  const roofGeo = new THREE.ConeGeometry(2.8, 1.8, 4);
+  const roof = new THREE.Mesh(
+    roofGeo,
+    new THREE.MeshPhongMaterial({ color: 0x8B4513 })
+  );
+  roof.position.set(45, 3.7, 35);
+  roof.rotation.y = Math.PI / 4;
+  roof.castShadow = true;
+  house.add(roof);
+  
+  // Door
+  const door = new THREE.Mesh(
+    new THREE.BoxGeometry(0.8, 1.5, 0.1),
+    new THREE.MeshPhongMaterial({ color: 0x654321 })
+  );
+  door.position.set(45, 0.75, 36.8);
+  house.add(door);
+  
+  // Windows
+  const windowGeo = new THREE.BoxGeometry(0.7, 0.7, 0.1);
+  const windowMat = new THREE.MeshPhongMaterial({ 
+    color: 0x87ceeb,
+    transparent: true,
+    opacity: 0.6,
+    shininess: 100
+  });
+  
+  [43.8, 46.2].forEach(x => {
+    const win = new THREE.Mesh(windowGeo, windowMat);
+    win.position.set(x, 1.8, 36.8);
+    house.add(win);
+  });
+  
+  // Chimney
+  const chimney = new THREE.Mesh(
+    new THREE.BoxGeometry(0.3, 1.2, 0.3),
+    new THREE.MeshPhongMaterial({ color: 0x8B4513 })
+  );
+  chimney.position.set(44, 4.2, 34.5);
+  house.add(chimney);
+  
+  // Mailbox
+  const mailboxPost = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.05, 0.05, 1, 8),
+    new THREE.MeshPhongMaterial({ color: COLORS.dark })
+  );
+  mailboxPost.position.set(43, 0.5, 37);
+  house.add(mailboxPost);
+  
+  const mailboxBox = new THREE.Mesh(
+    new THREE.BoxGeometry(0.25, 0.15, 0.35),
+    new THREE.MeshPhongMaterial({ color: COLORS.primary })
+  );
+  mailboxBox.position.set(43, 1, 37);
+  house.add(mailboxBox);
+  
+  // Garden fence
+  for (let i = 0; i < 8; i++) {
+    const fence = new THREE.Mesh(
+      new THREE.BoxGeometry(0.08, 0.6, 0.08),
+      new THREE.MeshPhongMaterial({ color: 0xffffff })
+    );
+    fence.position.set(42 + i * 0.5, 0.3, 37.5);
+    house.add(fence);
+  }
+  
+  scene.add(house);
+
+  // Customer
+  const customer = createHuman(0x3498db);
+  customer.position.set(45, 0, 37);
+  customer.visible = false;
+  scene.add(customer);
+
+  // Delivery person
+  const deliveryPerson = createHuman(COLORS.primary);
+  deliveryPerson.position.set(45, 0, 33);
+  deliveryPerson.visible = false;
+  scene.add(deliveryPerson);
+
+  // ============================================
+  // CREATE REALISTIC TRANSPORT TRUCK
+  // ============================================
+  const truck = new THREE.Group();
+  
+  // Cab
+  const cab = new THREE.Mesh(
+    new THREE.BoxGeometry(2.2, 2.2, 1.8),
+    new THREE.MeshPhongMaterial({ 
+      color: COLORS.primary,
+      shininess: 90,
+      specular: 0x555555
+    })
+  );
+  cab.position.set(0, 1.3, 3.5);
+  cab.castShadow = true;
+  truck.add(cab);
+  
+  // Windshield
+  const windshield = new THREE.Mesh(
+    new THREE.BoxGeometry(2.1, 1.4, 0.1),
+    new THREE.MeshPhongMaterial({ 
+      color: 0x0a0a0a,
+      transparent: true,
+      opacity: 0.8,
+      shininess: 100
+    })
+  );
+  windshield.position.set(0, 1.8, 4.4);
+  windshield.rotation.x = -0.1;
+  truck.add(windshield);
+  
+  // Container
+  const container = new THREE.Mesh(
+    new THREE.BoxGeometry(2.3, 2.8, 7),
+    new THREE.MeshPhongMaterial({ 
+      color: COLORS.accent,
+      shininess: 60
+    })
+  );
+  container.position.set(0, 1.5, -1.5);
+  container.castShadow = true;
+  truck.add(container);
+  
+  // Corrugation ribs
+  for (let i = -3; i < 3.5; i += 0.5) {
+    const rib = new THREE.Mesh(
+      new THREE.BoxGeometry(0.06, 2.8, 0.06),
+      new THREE.MeshPhongMaterial({ color: 0xb8653d })
+    );
+    rib.position.set(1.18, 1.5, i);
+    truck.add(rib);
+    
+    const rib2 = rib.clone();
+    rib2.position.set(-1.18, 1.5, i);
+    truck.add(rib2);
+  }
+  
+  // Back door
+  const backDoor = new THREE.Mesh(
+    new THREE.BoxGeometry(2.2, 2.6, 0.2),
+    new THREE.MeshPhongMaterial({ color: COLORS.metal, shininess: 80 })
+  );
+  backDoor.position.set(0, 1.5, -5);
+  truck.add(backDoor);
+  
+  // Bumper
+  const bumper = new THREE.Mesh(
+    new THREE.BoxGeometry(2.3, 0.3, 0.25),
+    new THREE.MeshPhongMaterial({ color: COLORS.metal, shininess: 100 })
+  );
+  bumper.position.set(0, 0.5, 4.5);
+  truck.add(bumper);
+  
+  // Grille
+  const grille = new THREE.Mesh(
+    new THREE.BoxGeometry(2, 1, 0.15),
+    new THREE.MeshPhongMaterial({ color: COLORS.dark, shininess: 80 })
+  );
+  grille.position.set(0, 1.3, 4.45);
+  truck.add(grille);
+  
+  // Headlights
+  [-0.8, 0.8].forEach(x => {
+    const headlight = new THREE.Mesh(
+      new THREE.BoxGeometry(0.3, 0.2, 0.12),
+      new THREE.MeshPhongMaterial({ 
+        color: 0xffffdd,
+        emissive: 0xffff88,
+        emissiveIntensity: 0.7
+      })
+    );
+    headlight.position.set(x, 0.8, 4.52);
+    truck.add(headlight);
+  });
+  
+  // Truck wheels
+  const truckWheels = [];
+  const wheelGeo = new THREE.CylinderGeometry(0.45, 0.45, 0.35, 20);
+  const wheelMat = new THREE.MeshPhongMaterial({ color: 0x1a1a1a, shininess: 30 });
+  
+  const wheelPositions = [
+    [-1.3, 0.45, 2.5], [1.3, 0.45, 2.5],
+    [-1.3, 0.45, -1], [1.3, 0.45, -1],
+    [-1.3, 0.45, -3], [1.3, 0.45, -3]
+  ];
+  
+  wheelPositions.forEach(pos => {
+    const wheel = new THREE.Mesh(wheelGeo, wheelMat);
+    wheel.rotation.z = Math.PI / 2;
+    wheel.position.set(...pos);
+    wheel.castShadow = true;
+    truck.add(wheel);
+    truckWheels.push(wheel);
+    
+    // Rim
+    const rim = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.3, 0.3, 0.38, 16),
+      new THREE.MeshPhongMaterial({ color: COLORS.metal, shininess: 120 })
+    );
+    rim.rotation.z = Math.PI / 2;
+    rim.position.set(...pos);
+    truck.add(rim);
+  });
+  
+  // Side mirrors
+  [-1.3, 1.3].forEach(x => {
+    const mirror = new THREE.Mesh(
+      new THREE.BoxGeometry(0.3, 0.25, 0.4),
+      new THREE.MeshPhongMaterial({ color: COLORS.dark, shininess: 100 })
+    );
+    mirror.position.set(x, 2.5, 3.8);
+    truck.add(mirror);
+  });
+  
+  scene.add(truck);
+  truck.position.set(-60, 0, 0);
+
+  // ============================================
+  // CREATE DELIVERY VAN
+  // ============================================
+  const van = new THREE.Group();
+  
+  const vanCab = new THREE.Mesh(
+    new THREE.BoxGeometry(1.5, 1.6, 1.2),
+    new THREE.MeshPhongMaterial({ 
+      color: COLORS.secondary,
+      shininess: 90
+    })
+  );
+  vanCab.position.set(0, 1, 1.3);
+  vanCab.castShadow = true;
+  van.add(vanCab);
+  
+  const vanCargo = new THREE.Mesh(
+    new THREE.BoxGeometry(1.5, 1.8, 2.2),
+    new THREE.MeshPhongMaterial({ 
+      color: COLORS.secondary,
+      shininess: 80
+    })
+  );
+  vanCargo.position.set(0, 1, -0.4);
+  vanCargo.castShadow = true;
+  van.add(vanCargo);
+  
+  const vanWindshield = new THREE.Mesh(
+    new THREE.BoxGeometry(1.4, 1.1, 0.08),
+    new THREE.MeshPhongMaterial({ 
+      color: 0x0a0a0a,
+      transparent: true,
+      opacity: 0.8,
+      shininess: 100
+    })
+  );
+  vanWindshield.position.set(0, 1.4, 1.9);
+  van.add(vanWindshield);
+  
+  // Van lights
+  [-0.6, 0.6].forEach(x => {
+    const light = new THREE.Mesh(
+      new THREE.BoxGeometry(0.2, 0.15, 0.1),
+      new THREE.MeshPhongMaterial({ 
+        color: 0xffffdd,
+        emissive: 0xffff88,
+        emissiveIntensity: 0.6
+      })
+    );
+    light.position.set(x, 0.6, 1.95);
+    van.add(light);
+  });
+  
+  // Van wheels
+  const vanWheels = [];
+  const vanWheelGeo = new THREE.CylinderGeometry(0.35, 0.35, 0.28, 16);
+  
+  const vanWheelPos = [
+    [-0.85, 0.35, 0.9], [0.85, 0.35, 0.9],
+    [-0.85, 0.35, -1], [0.85, 0.35, -1]
+  ];
+  
+  vanWheelPos.forEach(pos => {
+    const wheel = new THREE.Mesh(vanWheelGeo, wheelMat);
+    wheel.rotation.z = Math.PI / 2;
+    wheel.position.set(...pos);
+    wheel.castShadow = true;
+    van.add(wheel);
+    vanWheels.push(wheel);
+    
+    const rim = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.22, 0.22, 0.3, 16),
+      new THREE.MeshPhongMaterial({ color: COLORS.metal, shininess: 120 })
+    );
+    rim.rotation.z = Math.PI / 2;
+    rim.position.set(...pos);
+    van.add(rim);
+  });
+  
+  scene.add(van);
+  van.position.set(42, 0, 0);
+  van.visible = false;
+
+  // ============================================
+  // PACKAGES
+  // ============================================
+  const package1 = createPackage(0.5);
+  package1.position.set(-38, 1.3, 1.5);
+  package1.visible = false;
+  scene.add(package1);
+  
+  const package2 = createPackage(0.5);
+  package2.position.set(47, 1.3, 1.5);
+  package2.visible = false;
+  scene.add(package2);
+  
+  const package3 = createPackage(0.4);
+  package3.position.set(45, 0.8, 34);
+  package3.visible = false;
+  scene.add(package3);
+
+  // ============================================
+  // ENVIRONMENT - REALISTIC ROAD
+  // ============================================
+  const roadCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-60, 0, 0),
+    new THREE.Vector3(-40, 0, 0),
+    new THREE.Vector3(0, 0, 0),
+    new THREE.Vector3(45, 0, 0),
+    new THREE.Vector3(45, 0, 15),
+    new THREE.Vector3(45, 0, 35)
+  ]);
+  
+  // Main road
+  const roadGeo = new THREE.PlaneGeometry(12, 200);
+  const roadMat = new THREE.MeshPhongMaterial({ 
+    color: COLORS.asphalt,
+    side: THREE.DoubleSide
+  });
+  const road = new THREE.Mesh(roadGeo, roadMat);
+  road.rotation.x = -Math.PI / 2;
+  road.position.y = -0.01;
+  road.receiveShadow = true;
+  scene.add(road);
+  
+  // Side road for turn
+  const sideRoad = new THREE.Mesh(
+    new THREE.PlaneGeometry(12, 60),
+    roadMat
+  );
+  sideRoad.rotation.x = -Math.PI / 2;
+  sideRoad.rotation.z = Math.PI / 2;
+  sideRoad.position.set(45, -0.01, 20);
+  sideRoad.receiveShadow = true;
+  scene.add(sideRoad);
+  
+  // Road lines
+  for (let i = -90; i < 40; i += 7) {
+    const line = new THREE.Mesh(
+      new THREE.BoxGeometry(0.25, 0.05, 4),
+      new THREE.MeshPhongMaterial({ color: 0xffffff })
+    );
+    line.position.set(0, 0.03, i);
+    scene.add(line);
+  }
+  
+  for (let i = 5; i < 35; i += 7) {
+    const line = new THREE.Mesh(
+      new THREE.BoxGeometry(0.25, 0.05, 4),
+      new THREE.MeshPhongMaterial({ color: 0xffffff })
+    );
+    line.rotation.y = Math.PI / 2;
+    line.position.set(45, 0.03, i);
+    scene.add(line);
+  }
+  
+  // Grass
+  const grassGeo = new THREE.PlaneGeometry(200, 200);
+  const grassMat = new THREE.MeshPhongMaterial({ color: COLORS.grass });
+  const grass = new THREE.Mesh(grassGeo, grassMat);
+  grass.rotation.x = -Math.PI / 2;
+  grass.position.y = -0.02;
+  grass.receiveShadow = true;
+  scene.add(grass);
+  
+  // Trees
+  for (let i = 0; i < 30; i++) {
+    const z = (Math.random() - 0.5) * 150;
+    const x = Math.random() > 0.5 ? -15 - Math.random() * 20 : 15 + Math.random() * 20;
+    
+    if (Math.abs(x - 45) > 10 || z < 0 || z > 40) {
+      const trunk = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.3, 0.4, 3, 12),
+        new THREE.MeshPhongMaterial({ color: 0x4a2511 })
+      );
+      trunk.position.set(x, 1.5, z);
+      trunk.castShadow = true;
+      scene.add(trunk);
+      
+      const foliage = new THREE.Mesh(
+        new THREE.SphereGeometry(1.5, 12, 12),
+        new THREE.MeshPhongMaterial({ color: 0x27ae60 })
+      );
+      foliage.position.set(x, 3.5, z);
+      foliage.castShadow = true;
+      scene.add(foliage);
+    }
+  }
+  
+  // Buildings in background
+  for (let i = 0; i < 8; i++) {
+    const x = (Math.random() - 0.5) * 80;
+    const z = -20 - Math.random() * 30;
+    const height = 8 + Math.random() * 15;
+    
+    if (Math.abs(x) > 20) {
+      const building = new THREE.Mesh(
+        new THREE.BoxGeometry(6, height, 6),
+        new THREE.MeshPhongMaterial({ 
+          color: 0x5d6d7e,
+          transparent: true,
+          opacity: 0.8
+        })
+      );
+      building.position.set(x, height / 2, z);
+      building.castShadow = true;
+      scene.add(building);
+    }
+  }
+
+  // ============================================
+  // LIGHTING - CINEMATIC
+  // ============================================
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambientLight);
+  const sunLight = new THREE.DirectionalLight(0xffffff, 1.5);
+  sunLight.position.set(30, 50, 30);
+  sunLight.castShadow = true;
+  sunLight.shadow.mapSize.width = 4096;
+  sunLight.shadow.mapSize.height = 4096;
+  sunLight.shadow.camera.near = 0.5;
+  sunLight.shadow.camera.far = 200;
+  sunLight.shadow.camera.left = -100;
+  sunLight.shadow.camera.right = 100;
+  sunLight.shadow.camera.top = 100;
+  sunLight.shadow.camera.bottom = -100;
+  scene.add(sunLight);
+  const fillLight = new THREE.DirectionalLight(0x87ceeb, 0.4);
+  fillLight.position.set(-30, 20, -30);
+  scene.add(fillLight);
+  const pointLight = new THREE.PointLight(COLORS.primary, 0.8, 100);
+  pointLight.position.set(0, 15, 0);
+  scene.add(pointLight);
+  // ============================================
+  // CAMERA
+  // ============================================
+  camera.position.set(-30, 12, 15);
+  camera.lookAt(-40, 2, 0);
+  // ============================================
+  // ANIMATION LOGIC - MULTI-STAGE
+  // ============================================
+  function easeInOutCubic(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+  function animateWalking(human, t) {
+  const { leftArm, rightArm, leftLeg, rightLeg } = human.userData;
+  const swing = Math.sin(t * 10) * 0.3;
+  leftArm.rotation.x = swing;
+  rightArm.rotation.x = -swing;
+  leftLeg.rotation.x = -swing;
+  rightLeg.rotation.x = swing;
+  }
+  function animatePackageHandoff(human, pkg, t) {
+  if (t < 0.5) {
+    human.userData.rightArm.rotation.z = easeInOutCubic(t * 2) * 1.5;
+    pkg.position.y = 1.3 + easeInOutCubic(t * 2) * 0.3;
+  } else {
+    human.userData.rightArm.rotation.z = 1.5 - easeInOutCubic((t - 0.5) * 2) * 1.5;
+    pkg.position.y = 1.6 - easeInOutCubic((t - 0.5) * 2) * 0.3;
+  }
+  }
+  function animate() {
+  requestAnimationFrame(animate);
+  animationTime++;
+  const totalCycle = PHASE_DURATION * 6;
+  const normalizedTime = animationTime % totalCycle;
+  const phase = Math.floor(normalizedTime / PHASE_DURATION);
+  const phaseProgress = (normalizedTime % PHASE_DURATION) / PHASE_DURATION;
+  const eased = easeInOutCubic(phaseProgress);
+
+  // Wheel rotation
+  truckWheels.forEach(wheel => wheel.rotation.x += 0.1);
+  vanWheels.forEach(wheel => wheel.rotation.x += 0.1);
+
+  // PHASE 0: Worker loads truck at Warehouse 1
+  if (phase === 0) {
+    truck.visible = true;
+    truck.position.set(-40, 0, 0);
+    truck.rotation.y = Math.PI / 2;
+    van.visible = false;
+    customer.visible = false;
+    deliveryPerson.visible = false;
+    
+    worker1.visible = true;
+    worker1.position.set(-38, 0, 1.5);
+    
+    package1.visible = true;
+    animatePackageHandoff(worker1, package1, phaseProgress);
+    
+    camera.position.set(-35, 8, 8);
+    camera.lookAt(-38, 1, 0);
+  }
+
+  // PHASE 1: Truck travels to Warehouse 2
+  else if (phase === 1) {
+    worker1.visible = false;
+    package1.visible = false;
+    truck.visible = true;
+    van.visible = false;
+    
+    const startX = -40;
+    const endX = 45;
+    truck.position.x = startX + (endX - startX) * eased;
+    truck.position.z = 0;
+    truck.rotation.y = Math.PI / 2;
+    
+    // Suspension
+    truck.position.y = Math.sin(animationTime * 0.1) * 0.05;
+    
+    // Camera follows
+    camera.position.set(truck.position.x - 15, 12, 15);
+    camera.lookAt(truck.position.x, 2, 0);
+  }
+
+  // PHASE 2: Worker unloads truck, loads van at Warehouse 2
+  else if (phase === 2) {
+    truck.visible = true;
+    truck.position.set(45, 0, 0);
+    truck.rotation.y = Math.PI / 2;
+    
+    van.visible = true;
+    van.position.set(42, 0, 0);
+    van.rotation.y = Math.PI / 2;
+    
+    worker2.visible = true;
+    worker2.position.set(47, 0, 1.5);
+    
+    package2.visible = true;
+    animatePackageHandoff(worker2, package2, phaseProgress);
+    
+    camera.position.set(50, 8, 8);
+    camera.lookAt(45, 1, 0);
+  }
+
+  // PHASE 3: Van travels straight
+  else if (phase === 3) {
+    truck.visible = false;
+    worker2.visible = false;
+    package2.visible = false;
+    van.visible = true;
+    
+    const startZ = 0;
+    const endZ = 15;
+    van.position.x = 45;
+    van.position.z = startZ + (endZ - startZ) * eased;
+    van.rotation.y = 0;
+    
+    van.position.y = Math.sin(animationTime * 0.1) * 0.04;
+    
+    camera.position.set(50, 9, van.position.z);
+    camera.lookAt(45, 1, van.position.z);
+  }
+
+  // PHASE 4: Van travels to house
+  else if (phase === 4) {
+    van.visible = true;
+    
+    const startZ = 15;
+    const endZ = 33;
+    van.position.x = 45;
+    van.position.z = startZ + (endZ - startZ) * eased;
+    van.rotation.y = 0;
+    
+    van.position.y = Math.sin(animationTime * 0.1) * 0.04;
+    
+    camera.position.set(50, 8, 32);
+    camera.lookAt(45, 1, van.position.z);
+  }
+
+  // PHASE 5: Delivery handoff
+  else if (phase === 5) {
+    van.visible = true;
+    van.position.set(45, 0, 33);
+    van.rotation.y = 0;
+    
+    deliveryPerson.visible = true;
+    deliveryPerson.position.set(45, 0, 34);
+    
+    customer.visible = true;
+    customer.position.set(45, 0, 36);
+    
+    package3.visible = true;
+    package3.position.set(45, 0.8 + Math.sin(phaseProgress * Math.PI) * 0.3, 35);
+    
+    if (phaseProgress < 0.5) {
+      animateWalking(deliveryPerson, phaseProgress);
+      deliveryPerson.position.z = 34 + phaseProgress * 2;
+    }
+    
+    camera.position.set(48, 6, 35);
+    camera.lookAt(45, 1.5, 35);
+  }
+
+  renderer.render(scene, camera);
+  }
+  animate();
+  // ============================================
+  // RESIZE
+  // ============================================
+  window.addEventListener('resize', () => {
+  camera.aspect = canvas.offsetWidth / canvas.offsetHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+  });
+  // ============================================
+  // UI COUNTER ANIMATIONS (PRESERVED)
+  // ============================================
+  function animateCounter(id, target, suffix = '') {
+  let current = 0;
+  const element = document.getElementById(id);
+  if (!element) return;
+  const increment = target / 50;
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
+    element.textContent = Math.floor(current) + suffix;
+  }, 30);
+  }
+  setTimeout(() => {
+  animateCounter('deliveriesCount', 1247);
+  animateCounter('routesCount', 89);
+  animateCounter('efficiencyCount', 98, '%');
+  }, 1000);
+  // Particle effects
+  const hero = document.querySelector('.login-hero');
+  if (hero) {
+  for (let i = 0; i < 20; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.top = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 5 + 's';
+    hero.appendChild(particle);
+  }
+  }
+  console.log('✅ Ultimate realistic logistics animation loaded!');
+});
+  </script>
+</body>
+</html> -->
