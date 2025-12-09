@@ -34,3 +34,5 @@ dependencies = [
     "uvicorn[standard]==0.24.0",
     "websockets==12.0",
 ]
+[tool.poetry]
+package-mode = false
